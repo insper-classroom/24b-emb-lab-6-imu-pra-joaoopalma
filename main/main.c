@@ -24,6 +24,12 @@ typedef struct {
     int8_t y;
 } mouse_data_t;
 
+typedef struct {
+    float x;
+    float y;
+    float z;
+} i2c_data;
+
 QueueHandle_t xQueueMouse;
 
 // Função de reset do MPU6050
@@ -64,15 +70,6 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp) {
 
 
 // Função para converter os dados do sensor
-void convert_sensor_data(int16_t accel[3], int16_t gyro[3], FusionVector *gyro_converted, FusionVector *accel_converted) {
-    gyro_converted->axis.x = gyro[0] / 131.0f;
-    gyro_converted->axis.y = gyro[1] / 131.0f;
-    gyro_converted->axis.z = gyro[2] / 131.0f;
-
-    accel_converted->axis.x = accel[0] / 16384.0f;
-    accel_converted->axis.y = accel[1] / 16384.0f;
-    accel_converted->axis.z = accel[2] / 16384.0f;
-}
 
 // Tarefa para leitura e processamento do MPU6050
 void mpu6050_task(void *p) {
@@ -94,7 +91,15 @@ void mpu6050_task(void *p) {
     while(1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
 
-        convert_sensor_data(acceleration, gyro, &gyroscope_converted, &accelerometer_converted);
+        FusionVector gyroscope_conveted;
+        gyroscope_conveted.axis.x = gyro[0] / 131.0f;
+        gyroscope_conveted.axis.y = gyro[1] / 131.0f;
+        gyroscope_conveted.axis.z = gyro[2] / 131.0f;
+
+        FusionVector accelerometer_converted;
+        accelerometer_converted.axis.x = acceleration[0] / 16384.0f;
+        accelerometer_converted.axis.y = acceleration[1] / 16384.0f;
+        accelerometer_converted.axis.z = acceleration[2] / 16384.0f;
 
         FusionAhrsUpdateNoMagnetometer(&ahrs, gyroscope_converted, accelerometer_converted, 0.01f);
 
