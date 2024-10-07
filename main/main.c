@@ -109,9 +109,11 @@ void mpu6050_task(void *p) {
         uart_putc_raw(UART_ID, -1);
 
         // y
+
+        int y = (euler.angle.roll) * (-1);
         uart_putc_raw(UART_ID, 1);
-        uart_putc_raw(UART_ID, (int) euler.angle.roll & 0xFF);
-        uart_putc_raw(UART_ID, ((int) euler.angle.roll >> 8) & 0xFF);
+        uart_putc_raw(UART_ID, y & 0xFF);
+        uart_putc_raw(UART_ID, (y >> 8) & 0xFF);
         uart_putc_raw(UART_ID, -1);
 
 
