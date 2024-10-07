@@ -24,11 +24,6 @@ typedef struct {
     int8_t y;
 } mouse_data_t;
 
-typedef struct {
-    float x;
-    float y;
-    float z;
-} i2c_data;
 
 QueueHandle_t xQueueMouse;
 
@@ -85,8 +80,6 @@ void mpu6050_task(void *p) {
     FusionAhrs ahrs;
     FusionAhrsInitialise(&ahrs);
 
-    FusionVector gyroscope_converted;
-    FusionVector accelerometer_converted;
 
     while(1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
