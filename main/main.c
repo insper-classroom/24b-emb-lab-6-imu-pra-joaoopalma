@@ -84,10 +84,10 @@ void mpu6050_task(void *p) {
     while(1) {
         mpu6050_read_raw(acceleration, gyro, &temp);
 
-        FusionVector gyroscope_conveted;
-        gyroscope_conveted.axis.x = gyro[0] / 131.0f;
-        gyroscope_conveted.axis.y = gyro[1] / 131.0f;
-        gyroscope_conveted.axis.z = gyro[2] / 131.0f;
+        FusionVector gyroscope_converted;
+        gyroscope_converted.axis.x = gyro[0] / 131.0f;
+        gyroscope_converted.axis.y = gyro[1] / 131.0f;
+        gyroscope_converted.axis.z = gyro[2] / 131.0f;
 
         FusionVector accelerometer_converted;
         accelerometer_converted.axis.x = acceleration[0] / 16384.0f;
