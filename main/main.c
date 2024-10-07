@@ -122,11 +122,13 @@ void mpu6050_task(void *p) {
         // printf("Gyro. X = %d, Y = %d, Z = %d - ", gyro[0], gyro[1], gyro[2]);
         // printf("Temp. = %f\n\n\n", (temp / 340.0) + 36.53);
 
-        if (acceleration[1] < -17000){
+        int modulo = abs(acceleration[1]);
+        
+        if (modulo > 17000){
             // printf("Mouse click detectado!\n");
             uart_putc_raw(UART_ID, 2);
             uart_putc_raw(UART_ID, 0);
-            uart_putc_raw(UART_ID, ((int) acceleration[1] >> 8) & 0xFF);
+            uart_putc_raw(UART_ID, ((modulo >> 8) & 0xFF));
             uart_putc_raw(UART_ID, -1);
         }
 
